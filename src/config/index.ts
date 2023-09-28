@@ -22,4 +22,7 @@ export default {
 			name: "furniture-products",
 		},
 	},
+	jwt:{
+		appSecret: process.env.APP_SECRET || "appsecret123"
+	}
 };
