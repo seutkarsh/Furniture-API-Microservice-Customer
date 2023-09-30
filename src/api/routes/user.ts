@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
 import { Container } from "typedi";
 import {
+	IAddressFields,
 	ILoginFields,
 	ISignupFields,
 	UserService,
@@ -27,6 +28,7 @@ export default (router: Router): void => {
 		}
 	});
 
+	//login
 	router.post("/login", async (req: Request, res: Response) => {
 		try {
 			const loginFields: ILoginFields = {
@@ -40,4 +42,24 @@ export default (router: Router): void => {
 			response.setError(e);
 		}
 	});
+
+	//create Address
+	router.post("/address",async (req:Request,res:Response)=>{
+		try{
+			const userId: string = req.body.userId
+			const addressFields:IAddressFields = {
+				street:req.body.street.toString(),
+				postalCode:req.body.postalCode.toString(),
+				city:req.body.city.toString(),
+				state:req.body.state.toString(),
+				country:req.body.toString()
+			}
+			const data = await userService.addAddress(userId,addressFields)
+		}catch (e) {
+			Logger.error(e);
+			// @ts-ignore
+			response.setError(e);
+		}
+	})
+
 };

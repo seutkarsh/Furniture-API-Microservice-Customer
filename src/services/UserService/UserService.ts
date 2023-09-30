@@ -59,8 +59,21 @@ export class UserService {
 			_id: existingUser._id,
 		});
 	}
+
+	async addAddress(userId: string, addressFields: IAddressFields) {
+		//address field validations
+		const user = await this.findUserById(userId);
+		if (!user) throw new Error(UserServiceError.INVALID_USER_ID);
+		const address = await this.userSchema.findByIdAndUpdate(userId, {
+			$push: { address: addressFields },
+		});
+	}
 	private async findUserByEmail(email: string) {
 		return this.userSchema.findOne({ email: email });
+	}
+
+	private async findUserById(userId: string) {
+		return this.userSchema.findById(userId);
 	}
 
 	private async generateSalt() {
@@ -86,10 +99,8 @@ export class UserService {
 		const generatedPassword = await this.generateSecurePassword(
 			userInput.password,
 			userInfo.salt,
-		)
-		return generatedPassword
-			 === userInfo.password
-		;
+		);
+		return generatedPassword === userInfo.password;
 	}
 }
 
@@ -109,7 +120,13 @@ export interface IUserCreationDetails {
 	mobile: string;
 	salt: string;
 }
-
+export interface IAddressFields {
+	street: string;
+	postalCode: string;
+	city: string;
+	state: string;
+	country: string;
+}
 export interface IJwtTokenPayload {
 	_id: string;
 	email: string;
@@ -119,4 +136,5 @@ export enum UserServiceError {
 	SIGNUP_USER_ALREADY_EXISTS = "User already exists by this email, please Login",
 	LOGIN_USER_NOT_EXISTS = "No user exists by this email, please SignUp",
 	WRONG_PASSWORD = "Wrong Password",
+	INVALID_USER_ID = "Invalid User ID",
 }
