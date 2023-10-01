@@ -7,6 +7,7 @@ import {
 	UserService,
 } from "../../services/UserService/UserService";
 import Logger from "../../loaders/logger";
+import UserAuthentication from "../middlewares/authentication";
 
 export default (router: Router): void => {
 	const userService = Container.get(UserService);
@@ -44,7 +45,7 @@ export default (router: Router): void => {
 	});
 
 	//create Address
-	router.post("/address", async (req: Request, res: Response) => {
+	router.post("/address", UserAuthentication,async (req: Request, res: Response) => {
 		try {
 			const userId: string = req.body.userId.toString();
 			const addressFields: IAddressFields = {
@@ -63,7 +64,7 @@ export default (router: Router): void => {
 	});
 
 	//get Profile
-	router.post("/profile", async (req: Request, res: Response) => {
+	router.post("/profile", UserAuthentication,async (req: Request, res: Response) => {
 		try {
 			const userId: string = req.body.userId.toString();
 			const data = await userService.getUserProfile(userId);
@@ -75,7 +76,7 @@ export default (router: Router): void => {
 	});
 
 	//shopping details
-	router.post("/orders", async (req: Request, res: Response) => {
+	router.post("/orders", UserAuthentication,async (req: Request, res: Response) => {
 		try {
 			const userId: string = req.body.userId.toString();
 			const data = await userService.getUserOrders(userId);
@@ -87,7 +88,7 @@ export default (router: Router): void => {
 	});
 
 	//get wishlist
-	router.post("/wishlist",async (req:Request,res:Response)=>{
+	router.post("/wishlist",UserAuthentication,async (req:Request,res:Response)=>{
 		try{
 			const userId: string = req.body.userId.toString();
 			const data = await userService.getUserWishlist(userId);
