@@ -1,6 +1,5 @@
-import mongoose, { Connection, Document, Mongoose } from "mongoose";
+import mongoose, { Connection, Document } from "mongoose";
 import { Container } from "typedi";
-import config from "../config";
 
 const UserSchema = new mongoose.Schema(
 	{
@@ -93,10 +92,8 @@ export interface IUserSchema extends Document {
 }
 
 export default {
-	name:"UserSchema",
-	model:Container.get<Connection>(config.mongo.db.name).model(
-		"UserSchema",
-		UserSchema,
-		"users",
-	),
-}
+	name: "UserSchema",
+	model: Container.get<Connection>(
+		"mongoDBConnection",
+	).model<mongoose.Document>("UserSchema", UserSchema, "users"),
+};

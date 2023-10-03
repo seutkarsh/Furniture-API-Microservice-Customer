@@ -1,8 +1,7 @@
-import mongoose, {Connection,Document} from "mongoose";
-import {Container} from "typedi";
-import config from "../config";
+import mongoose, { Connection } from "mongoose";
+import { Container } from "typedi";
 
-const AddressSchema= new mongoose.Schema({
+const AddressSchema = new mongoose.Schema({
 	street: {
 		type: String,
 		require: true,
@@ -25,7 +24,7 @@ const AddressSchema= new mongoose.Schema({
 	},
 });
 
-export interface IAddressSchema extends Document{
+export interface IAddressSchema {
 	street: string;
 	postalCode: string;
 	city: string;
@@ -34,10 +33,8 @@ export interface IAddressSchema extends Document{
 }
 
 export default {
-	name:"AddressSchema",
-	model:Container.get<Connection>(config.mongo.db.name).model(
-	"AddressSchema",
-	AddressSchema,
-	"address",
-),
-}
+	name: "AddressSchema",
+	model: Container.get<Connection>(
+		"mongoDBConnection",
+	).model<mongoose.Document>("AddressSchema", AddressSchema, "address"),
+};

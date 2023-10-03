@@ -1,15 +1,13 @@
-import { Inject, Service } from "typedi";
-import { Document, Model } from "mongoose";
-import { IUserSchema } from "../../models/userSchema";
+import {Container, Inject, Service} from "typedi";
+import mongoose, { Document, Model } from "mongoose";
+import { IUserSchema } from "../../models/Schemas/userSchema";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../../config";
 
 @Service()
 export class UserService {
-	constructor(
-		@Inject("") private userSchema: Model<IUserSchema & Document>,
-	) {}
+	private userSchema: Model<IUserSchema & mongoose.Document> = Container.get("UserSchema")
 
 	//userSignup
 	async signUp(userDetails: ISignupFields) {

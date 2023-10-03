@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import UserSchema from "./userSchema";
-import AddressSchema from "./addressSchema";
+import UserSchema from "./Schemas/userSchema";
+import AddressSchema from "./Schemas/addressSchema";
 
 export const models: Array<{
 	name: string;
