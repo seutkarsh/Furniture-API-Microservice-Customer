@@ -9,7 +9,13 @@ import {
 import Logger from "../../loaders/logger";
 import { UserAuthorization } from "../middlewares/authorization";
 import { ResponseWrapper } from "../responses/responseWrapper";
-import { IAddAddressResponse, ISignUpLoginResponse } from "../responses/user";
+import {
+	IAddAddressResponse,
+	ISignUpLoginResponse,
+	IUserOrdersResponse,
+	IUserProfileResponse,
+	IUserWishlistResponse,
+} from "../responses/user";
 
 export default (router: Router): void => {
 	const userService = Container.get(UserService);
@@ -85,14 +91,17 @@ export default (router: Router): void => {
 		"/profile",
 		UserAuthorization,
 		async (req: Request, res: Response) => {
+			const response = new ResponseWrapper();
 			try {
 				const userId: string = req.body.userId.toString();
-				const data = await userService.getUserProfile(userId);
+				const data: IUserProfileResponse =
+					await userService.getUserProfile(userId);
+				response.setData(data);
 			} catch (e) {
-				Logger.error(e);
-				// @ts-ignore
-				response.setError(e);
+				Logger.error(e.message);
+				response.setError(e.message);
 			}
+			res.json(response);
 		},
 	);
 
@@ -101,14 +110,17 @@ export default (router: Router): void => {
 		"/orders",
 		UserAuthorization,
 		async (req: Request, res: Response) => {
+			const response = new ResponseWrapper<IUserOrdersResponse>();
 			try {
 				const userId: string = req.body.userId.toString();
-				const data = await userService.getUserOrders(userId);
+				const data: IUserOrdersResponse =
+					await userService.getUserOrders(userId);
+				response.setData(data);
 			} catch (e) {
-				Logger.error(e);
-				// @ts-ignore
-				response.setError(e);
+				Logger.error(e.message);
+				response.setError(e.message);
 			}
+			res.json(response);
 		},
 	);
 
@@ -117,14 +129,17 @@ export default (router: Router): void => {
 		"/wishlist",
 		UserAuthorization,
 		async (req: Request, res: Response) => {
+			const response = new ResponseWrapper<IUserWishlistResponse>();
 			try {
 				const userId: string = req.body.userId.toString();
-				const data = await userService.getUserWishlist(userId);
+				const data: IUserWishlistResponse =
+					await userService.getUserWishlist(userId);
+				response.setData(data);
 			} catch (e) {
-				Logger.error(e);
-				// @ts-ignore
-				response.setError(e);
+				Logger.error(e.message);
+				response.setError(e.message);
 			}
+			res.json(response);
 		},
 	);
 };

@@ -81,19 +81,25 @@ export class UserService {
 	async getUserProfile(userId: string) {
 		const user = await this.findUserById(userId);
 		if (!user) throw new Error(UserServiceError.INVALID_USER_ID);
-		return user;
+		return { userDetails: user };
 	}
 
 	async getUserOrders(userId: string) {
 		const user = await this.findUserById(userId);
 		if (!user) throw new Error(UserServiceError.INVALID_USER_ID);
-		return user;
+		return {
+			userId: user.id,
+			orders: user.orders,
+		};
 	}
 
 	async getUserWishlist(userId: string) {
 		const user = await this.findUserById(userId);
 		if (!user) throw new Error(UserServiceError.INVALID_USER_ID);
-		return user;
+		return {
+			userId: user.id,
+			wishlist: user.wishlist,
+		};
 	}
 	private async findUserByEmail(email: string) {
 		return this.userSchema.findOne({ email: email });
