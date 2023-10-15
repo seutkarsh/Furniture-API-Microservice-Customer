@@ -9,7 +9,7 @@ import {
 import Logger from "../../loaders/logger";
 import { UserAuthorization } from "../middlewares/authorization";
 import { ResponseWrapper } from "../responses/responseWrapper";
-import { ISignUpLoginResponse } from "../responses/user";
+import { IAddAddressResponse, ISignUpLoginResponse } from "../responses/user";
 
 export default (router: Router): void => {
 	const userService = Container.get(UserService);
@@ -57,7 +57,7 @@ export default (router: Router): void => {
 		"/address",
 		UserAuthorization,
 		async (req: Request, res: Response) => {
-			const response = new ResponseWrapper();
+			const response = new ResponseWrapper<IAddAddressResponse>();
 			try {
 				const userId: string = req.body.userId.toString();
 				const addressFields: IAddressFields = {
@@ -65,16 +65,15 @@ export default (router: Router): void => {
 					postalCode: req.body.postalCode.toString(),
 					city: req.body.city.toString(),
 					state: req.body.state.toString(),
-					country: req.body.toString(),
+					country: req.body.country.toString(),
 				};
-				const data = await userService.addAddress(
+				const data: IAddAddressResponse = await userService.addAddress(
 					userId,
 					addressFields,
 				);
 				response.setData(data);
 			} catch (e) {
-				Logger.error(e);
-				// @ts-ignore
+				Logger.error(e.message);
 				response.setError(e.message);
 			}
 			res.json(response);

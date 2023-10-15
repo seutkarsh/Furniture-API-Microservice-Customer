@@ -4,11 +4,14 @@ import { IUserSchema } from "../../models/Schemas/userSchema";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../../config";
+import { IAddressSchema } from "../../models/Schemas/addressSchema";
 
 @Service()
 export class UserService {
 	private userSchema: Model<IUserSchema & mongoose.Document> =
 		Container.get("UserSchema");
+	private addressSchema: Model<IAddressSchema & mongoose.Document> =
+		Container.get("AddressSchema");
 
 	//userSignup
 	async signUp(userDetails: ISignupFields) {
@@ -65,10 +68,14 @@ export class UserService {
 		//address field validations
 		const user = await this.findUserById(userId);
 		if (!user) throw new Error(UserServiceError.INVALID_USER_ID);
-		const address = await this.userSchema.findByIdAndUpdate(userId, {
-			$push: { address: addressFields },
+
+		const address = await this.addressSchema.create(addressFields);
+		const addressObjectReference: mongoose.Types.ObjectId =
+			mongoose.Types.ObjectId(address.id);
+		await this.userSchema.findByIdAndUpdate(userId, {
+			$push: { address: addressObjectReference },
 		});
-		return address;
+		return { userId: userId, address: address };
 	}
 
 	async getUserProfile(userId: string) {
