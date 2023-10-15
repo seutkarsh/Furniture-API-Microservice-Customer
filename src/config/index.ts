@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import * as procress from "process";
+import * as process from "process";
 
 const envFound = dotenv.config();
 
@@ -8,10 +8,10 @@ if (!envFound) {
 }
 
 export default {
-	apiEndpoint: procress.env.API_ENDPOINT || "http://localhost",
-	port: parseInt(procress.env.PORT || "3000", 10) || 3000,
+	apiEndpoint: process.env.API_ENDPOINT || "http://localhost",
+	port: parseInt(process.env.PORT || "3000", 10) || 3000,
 	logs: {
-		level: procress.env.LOG_LEVEL || "silly",
+		level: process.env.LOG_LEVEL || "silly",
 	},
 	mongo: {
 		uri: process.env.MONGODB_URI || "mongodb://localhost:27017/",
@@ -22,7 +22,7 @@ export default {
 			name: "furniture-users",
 		},
 	},
-	jwt:{
-		appSecret: process.env.APP_SECRET || "appsecret123"
-	}
+	jwt: {
+		appSecret: process.env.APP_SECRET || "appsecret123",
+	},
 };

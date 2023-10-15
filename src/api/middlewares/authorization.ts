@@ -9,11 +9,11 @@ export const UserAuthorization = async (
 ) => {
 	const signature: string | undefined = req.get("Authorization");
 	if (signature) {
-		const payload = await jwt.verify(
+		req.body.user = await jwt.verify(
 			signature.split(" ")[1],
 			config.jwt.appSecret,
 		);
-		req.body.user = payload;
+
 		return next();
 	} else return next(new UnauthorizedError(new Error("Authorization Error")));
 };

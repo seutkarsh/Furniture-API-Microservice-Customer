@@ -1,5 +1,5 @@
-import { Container, Inject, Service } from "typedi";
-import mongoose, { Document, Model } from "mongoose";
+import { Container, Service } from "typedi";
+import mongoose, { Model } from "mongoose";
 import { IUserSchema } from "../../models/Schemas/userSchema";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

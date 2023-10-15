@@ -1,7 +1,6 @@
 import { Application, Request, Response } from "express";
 import Router from "../api/index";
 import bodyParser from "body-parser";
-import { UserAuthorization } from "../api/middlewares/authorization";
 import Logger from "./logger";
 
 export default (expressApp: Application): void => {

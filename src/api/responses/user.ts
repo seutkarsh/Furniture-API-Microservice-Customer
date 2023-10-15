@@ -1,5 +1,5 @@
 import { IAddressSchema } from "../../models/Schemas/addressSchema";
-import userSchema, {
+import {
 	IOrderItem,
 	IUserSchema,
 	IWishlistItem,

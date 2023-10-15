@@ -1,6 +1,5 @@
 import mongoose, { Connection } from "mongoose";
 import { Container } from "typedi";
-import { strict } from "assert";
 
 const AddressSchema = new mongoose.Schema({
 	street: {
