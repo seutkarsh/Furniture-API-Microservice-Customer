@@ -19,7 +19,7 @@ export default {
 		username: process.env.MONGODB_URI_AUTH_USERNAME || null,
 		password: process.env.MONGODB_URI_AUTH_PASSWORD || null,
 		db: {
-			name: "furniture-products",
+			name: "furniture-users",
 		},
 	},
 	jwt:{

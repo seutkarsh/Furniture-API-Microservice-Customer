@@ -1,8 +1,9 @@
 import { Router } from "express";
+import user from "./routes/user";
 export default (): Router => {
-    const expressRouter = Router();
+	const expressRouter = Router();
 
-    //route groups
-    // products(expressRouter);
-    return expressRouter;
+	//route groups
+	user(expressRouter);
+	return expressRouter;
 };

@@ -1,4 +1,4 @@
-import {Container, Inject, Service} from "typedi";
+import { Container, Inject, Service } from "typedi";
 import mongoose, { Document, Model } from "mongoose";
 import { IUserSchema } from "../../models/Schemas/userSchema";
 import bcrypt from "bcrypt";
@@ -7,7 +7,8 @@ import config from "../../config";
 
 @Service()
 export class UserService {
-	private userSchema: Model<IUserSchema & mongoose.Document> = Container.get("UserSchema")
+	private userSchema: Model<IUserSchema & mongoose.Document> =
+		Container.get("UserSchema");
 
 	//userSignup
 	async signUp(userDetails: ISignupFields) {
@@ -35,6 +36,7 @@ export class UserService {
 			email: user.email,
 			_id: user._id,
 		});
+		return { userId: user._id, token: token };
 	}
 
 	async login(userDetails: ILoginFields) {
@@ -56,6 +58,7 @@ export class UserService {
 			email: existingUser.email,
 			_id: existingUser._id,
 		});
+		return { userId: existingUser._id, token: token };
 	}
 
 	async addAddress(userId: string, addressFields: IAddressFields) {
@@ -65,6 +68,7 @@ export class UserService {
 		const address = await this.userSchema.findByIdAndUpdate(userId, {
 			$push: { address: addressFields },
 		});
+		return address;
 	}
 
 	async getUserProfile(userId: string) {
@@ -73,16 +77,16 @@ export class UserService {
 		return user;
 	}
 
-	async getUserOrders(userId:string){
-		const user = await this.findUserById(userId)
-		if(!user) throw new Error(UserServiceError.INVALID_USER_ID)
-		return user
+	async getUserOrders(userId: string) {
+		const user = await this.findUserById(userId);
+		if (!user) throw new Error(UserServiceError.INVALID_USER_ID);
+		return user;
 	}
 
-	async getUserWishlist(userId:string){
-		const user = await this.findUserById(userId)
-		if(!user) throw new Error(UserServiceError.INVALID_USER_ID)
-		return user
+	async getUserWishlist(userId: string) {
+		const user = await this.findUserById(userId);
+		if (!user) throw new Error(UserServiceError.INVALID_USER_ID);
+		return user;
 	}
 	private async findUserByEmail(email: string) {
 		return this.userSchema.findOne({ email: email });
